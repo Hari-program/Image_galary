@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Premium Interactive Image Gallery — A futuristic, glassmorphism-inspired image gallery with dynamic filtering, lightbox preview, and smooth animations." />
+  <meta name="keywords" content="image gallery, photography, portfolio, glassmorphism, modern UI" />
+  <meta name="author" content="Premium Gallery" />
+  <meta property="og:title" content="Premium Interactive Image Gallery" />
+  <meta property="og:description" content="A stunning modern image gallery with advanced filtering, lightbox, and micro-animations." />
+  <meta property="og:type" content="website" />
+  <title>Premium Interactive Image Gallery</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dark-mode" id="app-body">
+
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+
+ 
+  <div class="bg-particles" aria-hidden="true">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <div class="nav-logo" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="10" height="10" rx="2" fill="url(#g1)"/>
+          <rect x="16" y="2" width="10" height="10" rx="2" fill="url(#g2)" opacity="0.7"/>
+          <rect x="2" y="16" width="10" height="10" rx="2" fill="url(#g2)" opacity="0.7"/>
+          <rect x="16" y="16" width="10" height="10" rx="2" fill="url(#g1)"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#a855f7"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#06b6d4"/>
+              <stop offset="100%" stop-color="#a855f7"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="nav-title">PixelVault</span>
+    </div>
+    <div class="nav-actions">
+      <!-- Dark / Light Mode Toggle -->
+      <button class="nav-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle Theme">
+        <span class="theme-icon" id="theme-icon">🌙</span>
+      </button>
+      <!-- Favorites Filter Toggle -->
+      <button class="nav-btn fav-toggle" id="fav-toggle" aria-label="Show favorites only" title="Show Favorites">
+        <span>♡</span>
+        <span class="fav-count" id="fav-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <header class="hero" id="hero" role="banner">
+    <div class="hero-content">
+      <p class="hero-eyebrow animate-fade-up">✦ Curated Visual Experience</p>
+      <h1 class="hero-title animate-fade-up delay-1">
+        Where Every Pixel<br />
+        <span class="gradient-text">Tells a Story</span>
+      </h1>
+      <p class="hero-subtitle animate-fade-up delay-2">
+        A premium gallery of handpicked moments — from serene nature escapes to
+        cutting-edge architecture. Explore. Discover. Be inspired.
+      </p>
+      <a href="#gallery" class="hero-cta animate-fade-up delay-3" id="hero-cta" aria-label="Explore the gallery">
+        <span>Explore Gallery</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <!-- Floating decorative elements -->
+    <div class="hero-orb orb-1" aria-hidden="true"></div>
+    <div class="hero-orb orb-2" aria-hidden="true"></div>
+    <div class="hero-orb orb-3" aria-hidden="true"></div>
+  </header>
+
+  <main id="main-content" role="main">
+
+    <section class="controls-section" id="controls-section" aria-label="Gallery controls">
+      <div class="controls-inner">
+
+        <!-- Search Bar -->
+        <div class="search-wrapper" role="search">
+          <label for="search-input" class="sr-only">Search images</label>
+          <div class="search-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <input
+            type="search"
+            id="search-input"
+            class="search-input"
+            placeholder="Search images, categories..."
+            aria-label="Search images by title or category"
+            autocomplete="off"
+          />
+          <button class="search-clear" id="search-clear" aria-label="Clear search" style="display:none;">✕</button>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="filter-scroll-wrapper" role="tablist" aria-label="Image categories">
+          <div class="filter-tabs" id="filter-tabs">
+            <button class="filter-btn active" data-category="all" role="tab" aria-selected="true" id="filter-all">All</button>
+            <button class="filter-btn" data-category="nature" role="tab" aria-selected="false" id="filter-nature">🌿 Nature</button>
+            <button class="filter-btn" data-category="technology" role="tab" aria-selected="false" id="filter-technology">💻 Technology</button>
+            <button class="filter-btn" data-category="travel" role="tab" aria-selected="false" id="filter-travel">✈️ Travel</button>
+            <button class="filter-btn" data-category="animals" role="tab" aria-selected="false" id="filter-animals">🐾 Animals</button>
+            <button class="filter-btn" data-category="architecture" role="tab" aria-selected="false" id="filter-architecture">🏛️ Architecture</button>
+            <button class="filter-btn" data-category="abstract" role="tab" aria-selected="false" id="filter-abstract">🎨 Abstract</button>
+          </div>
+        </div>
+
+
+        <div class="results-info" id="results-info" aria-live="polite" aria-atomic="true">
+          <span id="results-count">18</span> Photos
+        </div>
+
+      </div>
+    </section>
+
+    <section class="gallery-section" id="gallery" aria-label="Image gallery">
+      <div class="gallery-grid" id="gallery-grid" role="list">
+        
+      </div>
+
+     
+      <div class="empty-state" id="empty-state" aria-live="polite" style="display:none;">
+        <div class="empty-icon">🔍</div>
+        <h3>No images found</h3>
+        <p>Try a different search term or category.</p>
+        <button class="empty-reset-btn" id="empty-reset-btn">Reset Filters</button>
+      </div>
+
+      <div class="skeleton-grid" id="skeleton-grid" aria-label="Loading images" aria-hidden="false">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </section>
+
+  </main>
+
+  
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" style="display:none;">
+    <div class="lightbox-backdrop" id="lightbox-backdrop" aria-hidden="true"></div>
+
+    <div class="lightbox-container">
+
+      <!-- Header controls -->
+      <div class="lightbox-header">
+        <div class="lightbox-meta">
+          <span class="lightbox-category-badge" id="lb-category">Nature</span>
+          <h2 class="lightbox-title" id="lb-title">Image Title</h2>
+        </div>
+        <div class="lightbox-header-actions">
+          <button class="lb-btn" id="lb-fav-btn" aria-label="Toggle favorite">♡</button>
+          <button class="lb-btn" id="lb-fullscreen-btn" aria-label="Toggle fullscreen">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          </button>
+          <button class="lb-btn" id="lb-download-btn" aria-label="Download image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+          <button class="lb-btn lb-close-btn" id="lb-close-btn" aria-label="Close lightbox">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      
+      <div class="lightbox-image-area">
+        <button class="lb-nav-btn lb-prev" id="lb-prev" aria-label="Previous image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="lightbox-img-wrapper" id="lb-img-wrapper">
+          <img class="lightbox-img" id="lb-img" src="" alt="" loading="lazy" />
+          <div class="lb-loading-spinner" id="lb-spinner" aria-hidden="true"></div>
+        </div>
+        <button class="lb-nav-btn lb-next" id="lb-next" aria-label="Next image">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="lightbox-footer">
+        <p class="lb-description" id="lb-description">Photo description goes here.</p>
+        <div class="lb-footer-actions">
+          <span class="lb-counter" id="lb-counter">1 / 18</span>
+          <button class="lb-slideshow-btn" id="lb-slideshow-btn" aria-label="Start slideshow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="slideshow-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="slideshow-label">Slideshow</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lb-thumbnails" id="lb-thumbnails" aria-label="Image thumbnails" role="list">
+        <!-- Injected by JS -->
+      </div>
+
+    </div>
+  </div>
+
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo-text">PixelVault</span>
+        <p class="footer-tagline">Crafted with passion for visual excellence.</p>
+      </div>
+      <div class="footer-social" aria-label="Social media links">
+        <a href="https://github.com" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </a>
+        <a href="https://linkedin.com" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://dribbble.com" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Dribbble">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+        </a>
+        <a href="https://twitter.com" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="footer-year">2026</span> PixelVault. All rights reserved. Built with ♥ using HTML, CSS &amp; JavaScript.</p>
+    </div>
+  </footer>
+
+  
+  <script src="script.js"></script>
+</body>
+</html>
